@@ -383,8 +383,8 @@ class Constraints {
 
   static constraintsKnight(args: ConstraintArguments): Options {
     const { piece, piecePositions } = args;
-    const moves = [];
-    const captures = [];
+    const moves: Position[] = [];
+    const captures: Position[] = [];
     const locations = [
       piece.dir(1, 2, piecePositions),
       piece.dir(1, -2, piecePositions),
@@ -396,11 +396,13 @@ class Constraints {
       piece.dir(-2, -1, piecePositions),
     ];
     locations.forEach((location) => {
-      const value = Constraints.relationshipToTile(location, args);
-      if (value === "BLANK") {
-        moves.push(location);
-      } else if (value === "ENEMY") {
-        captures.push(location);
+      if (location) {
+        const value = Constraints.relationshipToTile(location, args);
+        if (value === "BLANK") {
+          moves.push(location);
+        } else if (value === "ENEMY") {
+          captures.push(location);
+        }
       }
     });
     return { moves, captures };
